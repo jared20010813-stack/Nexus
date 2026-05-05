@@ -3,9 +3,11 @@
   width="100vw"
   height="100vh"
   preserveAspectRatio="none">
+
   <foreignObject x="0" y="0" width="100%" height="100%">
     <body xmlns="http://www.w3.org/1999/xhtml"
       style="margin:0;width:100vw;height:100vh;font-family:system-ui,sans-serif;background:#0a0f1c;color:#e2e8f0;display:flex;flex-direction:column;overflow:hidden;">
+
       <style>
         header{background:#111827;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #1e2937}
         .logo{font-size:1.6rem;font-weight:700;color:#60a5fa;cursor:pointer}
@@ -22,95 +24,142 @@
 
       <header>
         <div class="logo" onclick="panic()">NexusForge</div>
-        <input id="urlInput" placeholder="Enter URL or game (e.g. 1v1.lol)"
-          style="flex:1;max-width:520px;margin:0 20px;padding:12px;border-radius:9999px;border:none;background:#1e2937;color:white;" 
+
+        <input id="urlInput"
+          placeholder="Enter URL or game (e.g. 1v1.lol)"
+          style="flex:1;max-width:520px;margin:0 20px;padding:12px;border-radius:9999px;border:none;background:#1e2937;color:white;"
           onkeypress="if(event.key==='Enter')goUrl()"/>
-        <button onclick="goUrl()" style="padding:10px 24px;background:#60a5fa;color:#0a0f1c;border:none;border-radius:9999px;cursor:pointer;">
-          Go Secure
+
+        <button onclick="goUrl()"
+          style="padding:10px 24px;background:#60a5fa;color:#0a0f1c;border:none;border-radius:9999px;cursor:pointer;">
+          Go
         </button>
       </header>
 
       <div class="main">
         <div class="sidebar">
           <h3 style="color:#64748b;margin-top:0;">Quick Access</h3>
+
           <div class="nav-item" onclick="addTab('https://google.com')">📚 Research Hub</div>
           <div class="nav-item" onclick="addTab('https://youtube.com')">📺 Video Lessons</div>
           <div class="nav-item" onclick="addTab('https://1v1.lol')">🎮 1v1.LOL</div>
           <div class="nav-item" onclick="addTab('https://slope-game.io')">🏔️ Slope</div>
-          <div class="nav-item" onclick="addTab('https://basketball-legends.io')">🏀 Basketball Legends</div>
           <div class="nav-item" onclick="addTab('https://krunker.io')">🔫 Krunker.io</div>
           <div class="nav-item" onclick="addTab('https://www.coolmathgames.com')">🎲 Coolmath Games</div>
+
           <hr style="border-color:#1e2937;margin:20px 0;"/>
-          <div onclick="customize()" style="cursor:pointer;padding:12px;background:#1e2937;border-radius:8px;text-align:center;">⚙️ Customize</div>
-          <p style="margin-top:30px;font-size:0.85rem;color:#64748b;"><strong>Panic:</strong> Press Esc twice</p>
+
+          <p style="font-size:0.85rem;color:#64748b;">
+            Tabs auto-save locally
+          </p>
         </div>
 
         <div class="content">
           <div class="tab-bar" id="tabBar"></div>
-          <!-- FIXED: XML-safe allowfullscreen -->
           <iframe id="mainFrame" src="https://www.google.com" allowfullscreen="allowfullscreen"></iframe>
         </div>
       </div>
 
       <script><![CDATA[
-        if ('serviceWorker' in navigator) {
-          fetch('https://cdn.jsdelivr.net/gh/PeteZah-G/PeteStatic@main/sw.js')
-            .then(res => res.text())
-            .then(code => {
-              const blob = new Blob([code], { type: 'application/javascript' });
-              const blobURL = URL.createObjectURL(blob);
-              navigator.serviceWorker.register(blobURL);
-            });
+        let tabs = [];
+        let current = 0;
+
+        // ---------- STORAGE ----------
+        function saveTabs() {
+          localStorage.setItem('nexus_tabs', JSON.stringify(tabs));
+          localStorage.setItem('nexus_current', current);
         }
 
-        let tabs = [], current = 0;
+        function loadTabs() {
+          const saved = localStorage.getItem('nexus_tabs');
+          const savedIndex = localStorage.getItem('nexus_current');
 
-        function renderTabs() {
-          const c = document.getElementById('tabBar');
-          c.innerHTML = '';
-          tabs.forEach((t, i) => {
-            const el = document.createElement('div');
-            el.className = `tab ${i === current ? 'active' : ''}`;
-            el.innerHTML = `${t.title} <span onclick="event.stopImmediatePropagation();closeTab(${i});" style="margin-left:10px;color:#999;">×</span>`;
-            el.onclick = () => switchTab(i);
-            c.appendChild(el);
-          });
+          if (saved) {
+            tabs = JSON.parse(saved);
+            current = parseInt(savedIndex || "0", 10);
+
+            if (!tabs.length) {
+              tabs = [{ url: 'https://google.com', title: 'google.com' }];
+              current = 0;
+            }
+          } else {
+            tabs = [{ url: 'https://google.com', title: 'google.com' }];
+            current = 0;
+          }
         }
 
+        // ---------- TABS ----------
         function addTab(url) {
-          if (!url.startsWith('http')) url = 'https://' + url;
-          const title = new URL(url).hostname.replace('www.', '');
-          tabs.push({url, title});
-          current = tabs.length - 1;
-          loadCurrent();
+          try {
+            if (!url.startsWith('http')) url = 'https://' + url;
+            const u = new URL(url);
+
+            tabs.push({
+              url: u.href,
+              title: u.hostname.replace('www.', '')
+            });
+
+            current = tabs.length - 1;
+
+            saveTabs();
+            loadCurrent();
+          } catch (e) {
+            alert("Invalid URL");
+          }
         }
 
         function switchTab(i) {
           current = i;
+          saveTabs();
           loadCurrent();
-        }
-
-        function loadCurrent() {
-          if (tabs.length === 0) return;
-          document.getElementById('mainFrame').src = tabs[current].url;
-          renderTabs();
         }
 
         function closeTab(i) {
           if (tabs.length <= 1) return;
+
           tabs.splice(i, 1);
+
           if (current >= tabs.length) current = tabs.length - 1;
+
+          saveTabs();
           loadCurrent();
         }
 
+        function loadCurrent() {
+          const frame = document.getElementById('mainFrame');
+
+          if (!tabs.length) {
+            frame.src = 'https://google.com';
+            return;
+          }
+
+          frame.src = tabs[current].url;
+
+          renderTabs();
+        }
+
+        function renderTabs() {
+          const bar = document.getElementById('tabBar');
+          bar.innerHTML = '';
+
+          tabs.forEach((t, i) => {
+            const el = document.createElement('div');
+            el.className = `tab ${i === current ? 'active' : ''}`;
+
+            el.innerHTML = `
+              ${t.title}
+              <span onclick="event.stopPropagation();closeTab(${i});" style="margin-left:10px;color:#999;">×</span>
+            `;
+
+            el.onclick = () => switchTab(i);
+            bar.appendChild(el);
+          });
+        }
+
+        // ---------- UI ----------
         function goUrl() {
           const v = document.getElementById('urlInput').value.trim();
           if (v) addTab(v);
-        }
-
-        function customize() {
-          const n = prompt('New name?', document.title);
-          if (n) document.title = n;
         }
 
         function panic() {
@@ -118,20 +167,13 @@
           setTimeout(() => document.body.style.display = 'flex', 1200);
         }
 
-        let esc = 0;
-        document.addEventListener('keydown', e => {
-          if (e.key === 'Escape') {
-            esc++;
-            if (esc >= 2) {
-              document.body.style.display = 'none';
-              setTimeout(() => { if (confirm('Return to NexusForge?')) document.body.style.display = 'flex'; }, 800);
-              esc = 0;
-            }
-          }
-        });
-
-        window.onload = () => addTab('https://google.com');
+        // ---------- INIT ----------
+        window.onload = () => {
+          loadTabs();
+          loadCurrent();
+        };
       ]]></script>
+
     </body>
   </foreignObject>
 </svg>
