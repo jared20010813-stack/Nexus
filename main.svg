@@ -15,55 +15,30 @@
         iframe{flex:1;border:none;background:#fff}
         .nav-item{padding:14px 16px;margin:6px 0;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:0.2s}
         .nav-item:hover{background:#1e2937;color:#60a5fa}
-        .nav-item:hover .icon-svg{transform:scale(1.2) rotate(8deg)}
+        .nav-item:hover svg{transform:scale(1.2)rotate(8deg)}
         .tab-bar{background:#111827;padding:8px 16px;display:flex;gap:8px;overflow-x:auto;border-bottom:1px solid #1e2937}
         .tab{padding:8px 18px;background:#1e2937;border-radius:9999px;white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:8px}
         .tab.active{background:#60a5fa;color:#0a0f1c}
-        .icon-svg{width:28px;height:28px;transition:0.3s}
+        svg{width:28px;height:28px;transition:0.3s}
       </style>
     </head>
     <body>
       <header>
         <div class="logo" onclick="panic()">NexusForge</div>
-        <input id="urlInput" placeholder="Enter URL or game (e.g. 1v1.lol)" style="flex:1;max-width:520px;margin:0 20px;padding:12px;border-radius:9999px;border:none;background:#1e2937;color:white;" onkeypress="if(event.key==='Enter') goUrl()" />
+        <input id="urlInput" placeholder="Enter URL or game (e.g. 1v1.lol)" style="flex:1;max-width:520px;margin:0 20px;padding:12px;border-radius:9999px;border:none;background:#1e2937;color:white;" onkeypress="if(event.key==='Enter')goUrl()"/>
         <button onclick="goUrl()" style="padding:10px 24px;background:#60a5fa;color:#0a0f1c;border:none;border-radius:9999px;cursor:pointer;">Go Secure</button>
       </header>
 
       <div class="main">
         <div class="sidebar">
           <h3 style="color:#64748b;margin-top:0;">Quick Access</h3>
-          
-          <div class="nav-item" onclick="addTab('https://google.com')">
-            <svg class="icon-svg" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><path d="M9 12h6"/><path d="M9 16h6"/><circle cx="12" cy="7" r="1"/></svg>
-            Research Hub
-          </div>
-          
-          <div class="nav-item" onclick="addTab('https://youtube.com')">
-            <svg class="icon-svg" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8z"/><path d="M10 9l5 3-5 3V9z"/></svg>
-            Video Lessons
-          </div>
-          
-          <div class="nav-item" onclick="addTab('https://1v1.lol')">
-            <svg class="icon-svg" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v18"/><path d="M5 7h14"/><path d="M5 17h14"/><circle cx="8" cy="10" r="2"/><circle cx="16" cy="14" r="2"/></svg>
-            1v1.LOL
-          </div>
-          <div class="nav-item" onclick="addTab('https://slope-game.io')">
-            <svg class="icon-svg" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>
-            Slope
-          </div>
-          <div class="nav-item" onclick="addTab('https://basketball-legends.io')">
-            <svg class="icon-svg" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M10 9l5 3-5 3V9z"/></svg>
-            Basketball Legends
-          </div>
-          <div class="nav-item" onclick="addTab('https://krunker.io')">
-            <svg class="icon-svg" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
-            Krunker.io
-          </div>
-          <div class="nav-item" onclick="addTab('https://www.coolmathgames.com')">
-            <svg class="icon-svg" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
-            Coolmath Games
-          </div>
-          
+          <div class="nav-item" onclick="addTab('https://google.com')"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><path d="M9 12h6"/><path d="M9 16h6"/><circle cx="12" cy="7" r="1"/></svg> Research Hub</div>
+          <div class="nav-item" onclick="addTab('https://youtube.com')"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><path d="M18 8a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V8z"/><path d="M10 9l5 3-5 3V9z"/></svg> Video Lessons</div>
+          <div class="nav-item" onclick="addTab('https://1v1.lol')"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M14 3v18"/><path d="M5 7h14"/><path d="M5 17h14"/></svg> 1v1.LOL</div>
+          <div class="nav-item" onclick="addTab('https://slope-game.io')"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg> Slope</div>
+          <div class="nav-item" onclick="addTab('https://basketball-legends.io')"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M10 9l5 3-5 3V9z"/></svg> Basketball Legends</div>
+          <div class="nav-item" onclick="addTab('https://krunker.io')"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg> Krunker.io</div>
+          <div class="nav-item" onclick="addTab('https://www.coolmathgames.com')"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg> Coolmath Games</div>
           <hr style="border-color:#1e2937;margin:20px 0;"/>
           <div onclick="customize()" style="cursor:pointer;padding:12px;background:#1e2937;border-radius:8px;text-align:center;">⚙️ Customize</div>
           <p style="margin-top:30px;font-size:0.85rem;color:#64748b;"><strong>Panic:</strong> Esc ×2</p>
@@ -76,10 +51,8 @@
       </div>
 
       <script>
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('https://cdn.jsdelivr.net/gh/PeteZah-G/PeteStatic@main/sw.js');
-        }
-        let tabs = [], current = 0;
+        if('serviceWorker'in navigator)navigator.serviceWorker.register('https://cdn.jsdelivr.net/gh/PeteZah-G/PeteStatic@main/sw.js');
+        let tabs=[],current=0;
         function renderTabs(){const c=document.getElementById('tabBar');c.innerHTML='';tabs.forEach((t,i)=>{const e=document.createElement('div');e.className=`tab ${i===current?'active':''}`;e.innerHTML=`${t.title} <span onclick="event.stopImmediatePropagation();closeTab(${i});" style="margin-left:10px;color:#999;">×</span>`;e.onclick=()=>switchTab(i);c.appendChild(e)})}
         function addTab(u){if(!u.startsWith('http'))u='https://'+u;const t=new URL(u).hostname.replace('www.','');tabs.push({url:u,title:t});renderTabs();switchTab(tabs.length-1)}
         function switchTab(i){current=i;document.getElementById('mainFrame').src=tabs[i].url;renderTabs()}
