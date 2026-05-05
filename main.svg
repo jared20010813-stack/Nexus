@@ -15,7 +15,7 @@
         iframe{flex:1;border:none;background:#fff}
         .nav-item{padding:14px 16px;margin:6px 0;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:0.2s}
         .nav-item:hover{background:#1e2937;color:#60a5fa}
-        .nav-item:hover svg{transform:scale(1.2)rotate(8deg)}
+        .nav-item:hover svg{transform:scale(1.2) rotate(8deg)}
         .tab-bar{background:#111827;padding:8px 16px;display:flex;gap:8px;overflow-x:auto;border-bottom:1px solid #1e2937}
         .tab{padding:8px 18px;background:#1e2937;border-radius:9999px;white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:8px}
         .tab.active{background:#60a5fa;color:#0a0f1c}
