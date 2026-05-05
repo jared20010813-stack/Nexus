@@ -6,8 +6,16 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
       <title>NexusForge — Elite Academic Intelligence Platform</title>
       <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        body { margin:0; font-family:'Inter',sans-serif; background:#0a0f1c; color:#e2e8f0; overflow:hidden; height:100vh; display:flex; flex-direction:column; }
+        body { 
+          margin:0; 
+          font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+          background:#0a0f1c; 
+          color:#e2e8f0; 
+          overflow:hidden; 
+          height:100vh; 
+          display:flex; 
+          flex-direction:column; 
+        }
         header { background:#111827; padding:12px 24px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #1e2937; }
         .logo { font-size:1.6rem; font-weight:700; color:#60a5fa; cursor:pointer; }
         .main { flex:1; display:flex; }
@@ -91,65 +99,4 @@
           tabs.forEach((tab, i) => {
             const el = document.createElement('div');
             el.className = `tab ${i === current ? 'active' : ''}`;
-            el.innerHTML = `${tab.title} <span onclick="event.stopImmediatePropagation(); closeTab(${i});" style="margin-left:10px;color:#999;">×</span>`;
-            el.onclick = () => switchTab(i);
-            container.appendChild(el);
-          });
-        }
-
-        function addTab(url) {
-          if (!url.startsWith('http')) url = 'https://' + url;
-          const title = new URL(url).hostname.replace('www.', '');
-          tabs.push({url, title});
-          renderTabs();
-          switchTab(tabs.length - 1);
-        }
-
-        function switchTab(i) {
-          current = i;
-          document.getElementById('mainFrame').src = tabs[i].url;
-          renderTabs();
-        }
-
-        function closeTab(i) {
-          if (tabs.length <= 1) return;
-          tabs.splice(i, 1);
-          if (current >= tabs.length) current = tabs.length - 1;
-          renderTabs();
-          switchTab(current);
-        }
-
-        function goUrl() {
-          let val = document.getElementById('urlInput').value.trim();
-          if (!val) return;
-          addTab(val);
-        }
-
-        let escCount = 0;
-        document.addEventListener('keydown', e => {
-          if (e.key === 'Escape') {
-            escCount++;
-            if (escCount >= 2) {
-              document.body.style.display = 'none';
-              setTimeout(() => { if (confirm('Return to NexusForge?')) document.body.style.display = 'flex'; }, 600);
-              escCount = 0;
-            }
-          }
-        });
-
-        window.customize = () => {
-          const newTitle = prompt('New platform name?', document.title);
-          if (newTitle) document.title = newTitle;
-        };
-
-        window.panic = () => {
-          document.body.style.display = 'none';
-          setTimeout(() => document.body.style.display = 'flex', 1500);
-        };
-
-        window.onload = () => addTab('https://google.com');
-      </script>
-    </body>
-    </html>
-  </foreignObject>
-</svg>
+            el
