@@ -46,7 +46,7 @@
 
         <div class="content">
           <div class="tab-bar" id="tabBar"></div>
-          <iframe id="mainFrame" src="https://www.google.com" allowfullscreen></iframe>
+          <iframe id="mainFrame" src="https://www.google.com" allowfullscreen/>
         </div>
       </div>
 
