@@ -3,46 +3,63 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080">
 
   <foreignObject width="100%" height="100%">
-    <body xmlns="http://www.w3.org/1999/xhtml" style="margin:0;background:#0a0f1c;color:white;font-family:sans-serif;">
+    <body xmlns="http://www.w3.org/1999/xhtml"
+      style="margin:0;font-family:system-ui,sans-serif;background:#0a0f1c;color:#e2e8f0;height:100vh;display:flex;flex-direction:column;overflow:hidden">
 
 ```
   <style>
-    header{background:#111827;padding:10px;display:flex;gap:10px}
-    input{flex:1;padding:10px;border-radius:999px;border:none;background:#1e2937;color:white}
-    button{padding:10px;border:none;border-radius:999px;background:#60a5fa}
-    .tabs{display:flex;gap:6px;background:#111827;padding:6px}
-    .tab{background:#1e2937;padding:6px 10px;border-radius:999px;cursor:pointer}
-    iframe{width:100%;height:90%;border:none}
+    header{background:#111827;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #1e2937}
+    .logo{font-size:1.6rem;font-weight:700;color:#60a5fa;cursor:pointer}
+    .main{flex:1;display:flex}
+    .sidebar{width:260px;background:#111827;padding:20px;overflow-y:auto;border-right:1px solid #1e2937}
+    .content{flex:1;display:flex;flex-direction:column}
+    iframe{flex:1;border:none;background:#fff}
+    .nav-item{padding:14px 16px;margin:6px 0;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:0.2s}
+    .nav-item:hover{background:#1e2937;color:#60a5fa}
+    .tab-bar{background:#111827;padding:8px 16px;display:flex;gap:8px;overflow-x:auto;border-bottom:1px solid #1e2937}
+    .tab{padding:8px 18px;background:#1e2937;border-radius:9999px;white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:8px}
+    .tab.active{background:#60a5fa;color:#0a0f1c}
+    svg{width:28px;height:28px;transition:0.3s}
   </style>
 
   <header>
-    <input id="url" placeholder="Enter URL"/>
-    <button onclick="NF_go()">Go</button>
+    <div class="logo" onclick="panic()">NexusForge</div>
+    <input id="urlInput" placeholder="Enter URL or game (e.g. 1v1.lol)"
+      style="flex:1;max-width:520px;margin:0 20px;padding:12px;border-radius:9999px;border:none;background:#1e2937;color:white;" />
+    <button onclick="goUrl()" style="padding:10px 24px;background:#60a5fa;color:#0a0f1c;border:none;border-radius:9999px;cursor:pointer;">
+      Go Secure
+    </button>
   </header>
 
-  <div class="tabs" id="tabs"></div>
-  <iframe id="frame"></iframe>
+  <div class="main">
+    <div class="sidebar">
+      <h3 style="color:#64748b;margin-top:0;">Quick Access</h3>
+
+      <div class="nav-item" onclick="addTab('https://google.com')">Research Hub</div>
+      <div class="nav-item" onclick="addTab('https://youtube.com')">Video Lessons</div>
+      <div class="nav-item" onclick="addTab('https://1v1.lol')">1v1.LOL</div>
+      <div class="nav-item" onclick="addTab('https://slope-game.io')">Slope</div>
+      <div class="nav-item" onclick="addTab('https://basketball-legends.io')">Basketball Legends</div>
+      <div class="nav-item" onclick="addTab('https://krunker.io')">Krunker.io</div>
+      <div class="nav-item" onclick="addTab('https://www.coolmathgames.com')">Coolmath Games</div>
+
+      <hr style="border-color:#1e2937;margin:20px 0;"/>
+      <div onclick="customize()" style="cursor:pointer;padding:12px;background:#1e2937;border-radius:8px;text-align:center;">
+        ⚙️ Customize
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="tab-bar" id="tabBar"></div>
+      <iframe id="mainFrame"></iframe>
+    </div>
+  </div>
 
   <script><![CDATA[
 
-    // ---- SAFE LOADER FOR JSDELIVR ----
-    function loadRepoScript(){
-      return new Promise((resolve, reject)=>{
-        const s=document.createElement('script');
-
-        // 🔗 CHANGE THIS if your file path differs
-        s.src='https://cdn.jsdelivr.net/gh/jared20010813-stack/NexusForge@main/app.js';
-
-        s.onload=resolve;
-        s.onerror=reject;
-        document.body.appendChild(s);
-      });
-    }
-
-    // ---- FALLBACK CORE (if repo fails) ----
     let tabs=[],current=0;
 
-    function norm(u){
+    function normalize(u){
       try{return new URL(u).href}
       catch{
         try{return new URL('https://'+u).href}
@@ -50,60 +67,90 @@
       }
     }
 
-    function render(){
-      const t=document.getElementById('tabs');
-      t.innerHTML='';
-      tabs.forEach((tab,i)=>{
-        const d=document.createElement('div');
-        d.className='tab';
-        d.textContent=tab.title;
-        d.onclick=()=>switchTab(i);
-        t.appendChild(d);
+    function renderTabs(){
+      const c=document.getElementById('tabBar');
+      c.innerHTML='';
+      tabs.forEach((t,i)=>{
+        const e=document.createElement('div');
+        e.className='tab'+(i===current?' active':'');
+
+        const title=document.createElement('span');
+        title.textContent=t.title;
+
+        const close=document.createElement('span');
+        close.textContent='×';
+        close.onclick=(ev)=>{ev.stopPropagation();closeTab(i);};
+
+        e.appendChild(title);
+        e.appendChild(close);
+        e.onclick=()=>switchTab(i);
+        c.appendChild(e);
       });
     }
 
-    function load(){
-      if(!tabs.length)return;
-      document.getElementById('frame').src=tabs[current].url;
-      render();
-    }
-
-    function add(u){
-      const v=norm(u);
-      if(!v) return alert('bad url');
-      tabs.push({url:v,title:new URL(v).hostname});
+    function addTab(u){
+      const v=normalize(u);
+      if(!v) return alert('Invalid URL');
+      const t=new URL(v).hostname.replace('www.','');
+      tabs.push({url:v,title:t});
       current=tabs.length-1;
       load();
     }
 
     function switchTab(i){
+      if(!tabs[i]) return;
       current=i;
       load();
     }
 
-    function NF_go(){
-      const val=document.getElementById('url').value;
-      if(window.NexusForge && NexusForge.go){
-        NexusForge.go(val); // use repo logic
-      }else{
-        add(val); // fallback
-      }
+    function load(){
+      if(!tabs.length) return;
+      document.getElementById('mainFrame').src=tabs[current].url;
+      renderTabs();
     }
 
-    // ---- INIT ----
-    loadRepoScript()
-      .then(()=>{
-        if(window.NexusForge && NexusForge.init){
-          NexusForge.init({
-            frameId:'frame',
-            tabsId:'tabs'
-          });
+    function closeTab(i){
+      if(tabs.length<=1) return;
+      tabs.splice(i,1);
+      if(current>=tabs.length) current=tabs.length-1;
+      load();
+    }
+
+    function goUrl(){
+      const v=document.getElementById('urlInput').value.trim();
+      if(v) addTab(v);
+    }
+
+    function customize(){
+      const n=prompt('New name?',document.title);
+      if(n)document.title=n;
+    }
+
+    function panic(){
+      document.body.style.display='none';
+      setTimeout(()=>document.body.style.display='flex',1200);
+    }
+
+    let esc=0,timer;
+    document.addEventListener('keydown',e=>{
+      if(e.key==='Escape'){
+        esc++;
+        clearTimeout(timer);
+        timer=setTimeout(()=>esc=0,500);
+        if(esc>=2){
+          document.body.style.display='none';
+          setTimeout(()=>document.body.style.display='flex',1000);
+          esc=0;
         }
-      })
-      .catch(()=>{
-        console.warn('Repo failed, using fallback');
-        add('https://example.com');
-      });
+      }
+    });
+
+    // jsDelivr hook (optional repo logic)
+    const s=document.createElement('script');
+    s.src='https://cdn.jsdelivr.net/gh/jared20010813-stack/NexusForge@main/app.js';
+    document.body.appendChild(s);
+
+    addTab('https://google.com');
 
   ]]></script>
 
