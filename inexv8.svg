@@ -72,7 +72,7 @@
 
       <div class="main">
         <div class="sidebar">
-          <div class="game" onclick="loadGame('https://ubg100.github.io/drive-mad/')">
+          <div class="game" onclick="loadGame('https://www.crazygames.com/embed/drive-mad')">
             🚗 Drive Mad
           </div>
 
