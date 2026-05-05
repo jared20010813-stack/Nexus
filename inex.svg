@@ -1,164 +1,134 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<svg xmlns="http://www.w3.org/2000/svg"
-  width="100vw"
-  height="100vh"
-  preserveAspectRatio="none">
-
+<svg xmlns="http://www.w3.org/2000/svg" width="100vw" height="100vh" preserveAspectRatio="none">
   <foreignObject x="0" y="0" width="100%" height="100%">
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <head>
+      <meta charset="UTF-8"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <title>NexusForge</title>
+      <style>
+        body{margin:0;width:100vw;height:100vh;font-family:system-ui,sans-serif;background:#0a0f1c;color:#e2e8f0;display:flex;flex-direction:column;overflow:hidden}
+        header{background:#111827;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #1e2937}
+        .logo{font-size:1.6rem;font-weight:700;color:#60a5fa;cursor:pointer}
+        .main{flex:1;display:flex;height:100%}
+        .sidebar{width:260px;background:#111827;padding:20px;overflow-y:auto;border-right:1px solid #1e2937}
+        .content{flex:1;display:flex;flex-direction:column;height:100%}
+        iframe{flex:1;border:none;background:#fff;width:100%}
+        .nav-item{padding:14px 16px;margin:6px 0;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:0.2s}
+        .nav-item:hover{background:#1e2937;color:#60a5fa}
+        .tab-bar{background:#111827;padding:8px 16px;display:flex;gap:8px;overflow-x:auto;border-bottom:1px solid #1e2937}
+        .tab{padding:8px 18px;background:#1e2937;border-radius:9999px;white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:8px}
+        .tab.active{background:#60a5fa;color:#0a0f1c}
+      </style>
+    </head>
+    <body>
+      <header>
+        <div class="logo" onclick="panic()">NexusForge</div>
+        <input id="urlInput" placeholder="Enter URL or game (e.g. 1v1.lol)" style="flex:1;max-width:520px;margin:0 20px;padding:12px;border-radius:9999px;border:none;background:#1e2937;color:white;" onkeypress="if(event.key==='Enter')goUrl()"/>
+        <button onclick="goUrl()" style="padding:10px 24px;background:#60a5fa;color:#0a0f1c;border:none;border-radius:9999px;cursor:pointer;">Go Secure</button>
+      </header>
 
-```
-<body xmlns="http://www.w3.org/1999/xhtml"
-  style="margin:0;width:100vw;height:100vh;font-family:system-ui,sans-serif;background:#0a0f1c;color:#e2e8f0;display:flex;flex-direction:column;overflow:hidden;">
+      <div class="main">
+        <div class="sidebar">
+          <h3 style="color:#64748b;margin-top:0;">Quick Access</h3>
+          <div class="nav-item" onclick="addTab('https://google.com')">📚 Research Hub</div>
+          <div class="nav-item" onclick="addTab('https://youtube.com')">📺 Video Lessons</div>
+          <div class="nav-item" onclick="addTab('https://1v1.lol')">🎮 1v1.LOL</div>
+          <div class="nav-item" onclick="addTab('https://slope-game.io')">🏔️ Slope</div>
+          <div class="nav-item" onclick="addTab('https://basketball-legends.io')">🏀 Basketball Legends</div>
+          <div class="nav-item" onclick="addTab('https://krunker.io')">🔫 Krunker.io</div>
+          <div class="nav-item" onclick="addTab('https://www.coolmathgames.com')">🎲 Coolmath Games</div>
+          <hr style="border-color:#1e2937;margin:20px 0;"/>
+          <div onclick="customize()" style="cursor:pointer;padding:12px;background:#1e2937;border-radius:8px;text-align:center;">⚙️ Customize</div>
+          <p style="margin-top:30px;font-size:0.85rem;color:#64748b;"><strong>Panic:</strong> Press Esc twice</p>
+        </div>
 
-  <style>
-    header{background:#111827;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #1e2937}
-    .logo{font-size:1.6rem;font-weight:700;color:#60a5fa;cursor:pointer}
-    .main{flex:1;display:flex;height:100%}
-    .sidebar{width:260px;background:#111827;padding:20px;overflow-y:auto;border-right:1px solid #1e2937}
-    .content{flex:1;display:flex;flex-direction:column;height:100%}
-    iframe{flex:1;border:none;background:#fff;width:100%}
-    .nav-item{padding:14px 16px;margin:6px 0;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:0.2s}
-    .nav-item:hover{background:#1e2937;color:#60a5fa}
-    .tab-bar{background:#111827;padding:8px 16px;display:flex;gap:8px;overflow-x:auto;border-bottom:1px solid #1e2937}
-    .tab{padding:8px 18px;background:#1e2937;border-radius:9999px;white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:8px}
-    .tab.active{background:#60a5fa;color:#0a0f1c}
-  </style>
-
-  <header>
-    <div class="logo" onclick="panic()">NexusForge</div>
-    <input id="urlInput" placeholder="Enter URL or game (e.g. 1v1.lol)"
-      style="flex:1;max-width:520px;margin:0 20px;padding:12px;border-radius:9999px;border:none;background:#1e2937;color:white;" />
-    <button onclick="goUrl()" style="padding:10px 24px;background:#60a5fa;color:#0a0f1c;border:none;border-radius:9999px;cursor:pointer;">
-      Go Secure
-    </button>
-  </header>
-
-  <div class="main">
-    <div class="sidebar">
-      <h3 style="color:#64748b;margin-top:0;">Quick Access</h3>
-
-      <div class="nav-item" onclick="addTab('https://google.com')">Research Hub</div>
-      <div class="nav-item" onclick="addTab('https://youtube.com')">Video Lessons</div>
-      <div class="nav-item" onclick="addTab('https://1v1.lol')">1v1.LOL</div>
-      <div class="nav-item" onclick="addTab('https://slope-game.io')">Slope</div>
-      <div class="nav-item" onclick="addTab('https://basketball-legends.io')">Basketball Legends</div>
-      <div class="nav-item" onclick="addTab('https://krunker.io')">Krunker.io</div>
-      <div class="nav-item" onclick="addTab('https://www.coolmathgames.com')">Coolmath Games</div>
-
-      <hr style="border-color:#1e2937;margin:20px 0;"/>
-      <div onclick="customize()" style="cursor:pointer;padding:12px;background:#1e2937;border-radius:8px;text-align:center;">
-        ⚙️ Customize
+        <div class="content">
+          <div class="tab-bar" id="tabBar"></div>
+          <iframe id="mainFrame" src="https://www.google.com" allowfullscreen></iframe>
+        </div>
       </div>
-    </div>
 
-    <div class="content">
-      <div class="tab-bar" id="tabBar"></div>
-      <iframe id="mainFrame"></iframe>
-    </div>
-  </div>
-
-  <script><![CDATA[
-
-    let tabs=[],current=0;
-
-    function normalize(u){
-      try{return new URL(u).href}
-      catch{
-        try{return new URL('https://'+u).href}
-        catch{return null}
-      }
-    }
-
-    function renderTabs(){
-      const c=document.getElementById('tabBar');
-      c.innerHTML='';
-      tabs.forEach((t,i)=>{
-        const e=document.createElement('div');
-        e.className='tab'+(i===current?' active':'');
-
-        const title=document.createElement('span');
-        title.textContent=t.title;
-
-        const close=document.createElement('span');
-        close.textContent='×';
-        close.onclick=(ev)=>{ev.stopPropagation();closeTab(i);};
-
-        e.appendChild(title);
-        e.appendChild(close);
-        e.onclick=()=>switchTab(i);
-        c.appendChild(e);
-      });
-    }
-
-    function addTab(u){
-      const v=normalize(u);
-      if(!v) return alert('Invalid URL');
-      const t=new URL(v).hostname.replace('www.','');
-      tabs.push({url:v,title:t});
-      current=tabs.length-1;
-      load();
-    }
-
-    function switchTab(i){
-      if(!tabs[i]) return;
-      current=i;
-      load();
-    }
-
-    function load(){
-      if(!tabs.length) return;
-      document.getElementById('mainFrame').src=tabs[current].url;
-      renderTabs();
-    }
-
-    function closeTab(i){
-      if(tabs.length<=1) return;
-      tabs.splice(i,1);
-      if(current>=tabs.length) current=tabs.length-1;
-      load();
-    }
-
-    function goUrl(){
-      const v=document.getElementById('urlInput').value.trim();
-      if(v) addTab(v);
-    }
-
-    function customize(){
-      const n=prompt('New name?',document.title);
-      if(n)document.title=n;
-    }
-
-    function panic(){
-      document.body.style.display='none';
-      setTimeout(()=>document.body.style.display='flex',1200);
-    }
-
-    let esc=0,timer;
-    document.addEventListener('keydown',e=>{
-      if(e.key==='Escape'){
-        esc++;
-        clearTimeout(timer);
-        timer=setTimeout(()=>esc=0,500);
-        if(esc>=2){
-          document.body.style.display='none';
-          setTimeout(()=>document.body.style.display='flex',1000);
-          esc=0;
+      <script><![CDATA[
+        // Proxy registration
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('https://cdn.jsdelivr.net/gh/PeteZah-G/PeteStatic@main/sw.js')
+            .then(() => console.log('%c✅ Proxy Ready', 'color:#60a5fa;font-weight:bold'));
         }
-      }
-    });
 
-    // jsDelivr connection
-    const s=document.createElement('script');
-    s.src='https://cdn.jsdelivr.net/gh/jared20010813-stack/Nexus@main/app.js';
-    document.body.appendChild(s);
+        let tabs = [], current = 0;
 
-    addTab('https://google.com');
+        function renderTabs() {
+          const container = document.getElementById('tabBar');
+          container.innerHTML = '';
+          tabs.forEach((tab, i) => {
+            const el = document.createElement('div');
+            el.className = `tab ${i === current ? 'active' : ''}`;
+            el.innerHTML = `${tab.title} <span onclick="event.stopImmediatePropagation(); closeTab(${i});" style="margin-left:10px;color:#999;">×</span>`;
+            el.onclick = () => switchTab(i);
+            container.appendChild(el);
+          });
+        }
 
-  ]]></script>
+        function addTab(url) {
+          if (!url.startsWith('http')) url = 'https://' + url;
+          const title = new URL(url).hostname.replace('www.', '');
+          tabs.push({url, title});
+          current = tabs.length - 1;
+          loadCurrent();
+        }
 
-</body>
-```
+        function switchTab(i) {
+          current = i;
+          loadCurrent();
+        }
 
+        function loadCurrent() {
+          if (tabs.length === 0) return;
+          document.getElementById('mainFrame').src = tabs[current].url;
+          renderTabs();
+        }
+
+        function closeTab(i) {
+          if (tabs.length <= 1) return;
+          tabs.splice(i, 1);
+          if (current >= tabs.length) current = tabs.length - 1;
+          loadCurrent();
+        }
+
+        function goUrl() {
+          const val = document.getElementById('urlInput').value.trim();
+          if (val) addTab(val);
+        }
+
+        function customize() {
+          const newName = prompt('New platform name?', document.title);
+          if (newName) document.title = newName;
+        }
+
+        function panic() {
+          document.body.style.display = 'none';
+          setTimeout(() => document.body.style.display = 'flex', 1200);
+        }
+
+        let escCount = 0;
+        document.addEventListener('keydown', e => {
+          if (e.key === 'Escape') {
+            escCount++;
+            if (escCount >= 2) {
+              document.body.style.display = 'none';
+              setTimeout(() => {
+                if (confirm('Return to NexusForge?')) document.body.style.display = 'flex';
+              }, 800);
+              escCount = 0;
+            }
+          }
+        });
+
+        // Start
+        window.onload = () => addTab('https://google.com');
+      ]]></script>
+    </body>
+    </html>
   </foreignObject>
 </svg>
