@@ -19,6 +19,7 @@
         .tab{padding:8px 18px;background:#1e2937;border-radius:9999px;white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:8px}
         .tab.active{background:#60a5fa;color:#0a0f1c}
       </style>
+
       <header>
         <div class="logo" onclick="panic()">NexusForge</div>
         <input id="urlInput" placeholder="Enter URL or game (e.g. 1v1.lol)"
@@ -28,6 +29,7 @@
           Go Secure
         </button>
       </header>
+
       <div class="main">
         <div class="sidebar">
           <h3 style="color:#64748b;margin-top:0;">Quick Access</h3>
@@ -42,6 +44,7 @@
           <div onclick="customize()" style="cursor:pointer;padding:12px;background:#1e2937;border-radius:8px;text-align:center;">⚙️ Customize</div>
           <p style="margin-top:30px;font-size:0.85rem;color:#64748b;"><strong>Panic:</strong> Press Esc twice</p>
         </div>
+
         <div class="content">
           <div class="tab-bar" id="tabBar"></div>
           <iframe id="mainFrame" src="https://www.google.com" allowfullscreen></iframe>
@@ -49,9 +52,15 @@
       </div>
 
       <script><![CDATA[
-        // Proxy (Scramjet)
+        // FIXED SERVICE WORKER (jsDelivr compatible via Blob)
         if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('https://cdn.jsdelivr.net/gh/PeteZah-G/PeteStatic@main/sw.js');
+          fetch('https://cdn.jsdelivr.net/gh/PeteZah-G/PeteStatic@main/sw.js')
+            .then(res => res.text())
+            .then(code => {
+              const blob = new Blob([code], { type: 'application/javascript' });
+              const blobURL = URL.createObjectURL(blob);
+              navigator.serviceWorker.register(blobURL);
+            });
         }
 
         let tabs = [], current = 0;
