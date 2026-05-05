@@ -3,7 +3,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080">
 
   <foreignObject width="100%" height="100%">
-    <body xmlns="http://www.w3.org/1999/xhtml" style="margin:0;font-family:sans-serif;background:#0a0f1c;color:white;">
+    <body xmlns="http://www.w3.org/1999/xhtml" style="margin:0;background:#0a0f1c;color:white;font-family:sans-serif;">
 
 ```
   <style>
@@ -17,13 +17,29 @@
 
   <header>
     <input id="url" placeholder="Enter URL"/>
-    <button onclick="go()">Go</button>
+    <button onclick="NF_go()">Go</button>
   </header>
 
   <div class="tabs" id="tabs"></div>
   <iframe id="frame"></iframe>
 
   <script><![CDATA[
+
+    // ---- SAFE LOADER FOR JSDELIVR ----
+    function loadRepoScript(){
+      return new Promise((resolve, reject)=>{
+        const s=document.createElement('script');
+
+        // 🔗 CHANGE THIS if your file path differs
+        s.src='https://cdn.jsdelivr.net/gh/jared20010813-stack/NexusForge@main/app.js';
+
+        s.onload=resolve;
+        s.onerror=reject;
+        document.body.appendChild(s);
+      });
+    }
+
+    // ---- FALLBACK CORE (if repo fails) ----
     let tabs=[],current=0;
 
     function norm(u){
@@ -65,11 +81,30 @@
       load();
     }
 
-    function go(){
-      add(document.getElementById('url').value);
+    function NF_go(){
+      const val=document.getElementById('url').value;
+      if(window.NexusForge && NexusForge.go){
+        NexusForge.go(val); // use repo logic
+      }else{
+        add(val); // fallback
+      }
     }
 
-    add('https://example.com');
+    // ---- INIT ----
+    loadRepoScript()
+      .then(()=>{
+        if(window.NexusForge && NexusForge.init){
+          NexusForge.init({
+            frameId:'frame',
+            tabsId:'tabs'
+          });
+        }
+      })
+      .catch(()=>{
+        console.warn('Repo failed, using fallback');
+        add('https://example.com');
+      });
+
   ]]></script>
 
 </body>
