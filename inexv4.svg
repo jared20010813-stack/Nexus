@@ -47,12 +47,12 @@
 
         <div class="content">
           <div class="tab-bar" id="tabBar"></div>
-          <iframe id="mainFrame" src="https://www.google.com" allowfullscreen></iframe>
+          <!-- FIXED: XML-safe allowfullscreen -->
+          <iframe id="mainFrame" src="https://www.google.com" allowfullscreen="allowfullscreen"></iframe>
         </div>
       </div>
 
       <script><![CDATA[
-        // FIXED SERVICE WORKER (jsDelivr compatible via Blob)
         if ('serviceWorker' in navigator) {
           fetch('https://cdn.jsdelivr.net/gh/PeteZah-G/PeteStatic@main/sw.js')
             .then(res => res.text())
